@@ -139,7 +139,7 @@ MAX_EGL_CACHE_ENTRY_SIZE := 262144
 TARGET_POWERHAL_VARIANT := tegra
 
 # Recovery
-TARGET_RECOVERY_DEVICE_DIRS += 
+TARGET_RECOVERY_DEVICE_DIRS += device/xiaomi/mocha
 TARGET_RECOVERY_FSTAB := device/xiaomi/mocha/initfiles/fstab.tn8
 BOARD_NO_SECURE_DISCARD := true
 
@@ -151,7 +151,7 @@ BOARD_OVERRIDE_RS_CPU_VARIANT_32 := cortex-a15
 SELINUX_IGNORE_NEVERALLOWS := true
 BOARD_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy/mocha \
                        $(LOCAL_PATH)/sepolicy/lineage-common \
-                       $(LOCAL_PATH)/sepolicy/common \
+                       $(LOCAL_PATH)/sepolicy/common
                       
 # SHIMS
 TARGET_LD_SHIM_LIBS := \
@@ -175,6 +175,7 @@ WIFI_DRIVER_FW_PATH_PARAM        := "/sys/module/bcmdhd/parameters/firmware_path
 #WIFI_DRIVER_MODULE_ARG           := "iface_name=wlan0"
 #WIFI_DRIVER_MODULE_NAME          := "bcmdhd"
 WIFI_HIDL_FEATURE_DISABLE_AP_MAC_RANDOMIZATION := true
+
 # workaround for devices that uses old GPU blobs
 BOARD_EGL_WORKAROUND_BUG_10194508 := true
                        
