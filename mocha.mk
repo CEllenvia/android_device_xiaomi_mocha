@@ -28,36 +28,47 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/etc/apns-conf.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/apns-conf.xml
 
 # Audio
-TARGET_TEGRA_AUDIO    ?= nvaudio
-TARGET_TEGRA_AUDIO_VERSION ?= 2.0
-ifeq ($(TARGET_TEGRA_AUDIO),nvaudio)
-PRODUCT_PACKAGES += \
-    a2dp_module_deviceports.xml \
-    a2dp_module_mixports.xml \
-    primary_module_deviceports.xml \
-    primary_module_mixports.xml \
-    r_submix_audio_policy_configuration.xml \
-    usb_module_deviceports.xml \
-    usb_module_mixports.xml \
-    ne_audio_policy_volumes.xml \
-    ne_default_volume_tables.xml
+ USE_XML_AUDIO_POLICY_CONF := 1
 
-ifeq ($(TARGET_TEGRA_DOLBY),true)
-PRODUCT_PACKAGES += \
-    msd_audio_policy_configuration.xml
-endif
-endif
+ PRODUCT_PACKAGES += \
+	android.hardware.audio@2.0 \
+	android.hardware.audio@2.0-impl \
+	android.hardware.audio.effect@2.0-impl \
+	libmocha_audio.so
+	
+PRODUCT_COPY_FILES += \
+    frameworks/av/services/audiopolicy/config/a2dp_in_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/a2dp_in_audio_policy_configuration.xml \
+    frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
+    frameworks/av/services/audiopolicy/config/bluetooth_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/bluetooth_audio_policy_configuration.xml \
+    frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
+    frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
+    frameworks/av/services/audiopolicy/config/surround_sound_configuration_5_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/surround_sound_configuration_5_0.xml \
+    frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml \
+    $(LOCAL_PATH)/audio/configs/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_configuration.xml \
+    $(LOCAL_PATH)/audio/configs/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml \
+    $(LOCAL_PATH)/audio/configs/audio_mocha.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_mocha.xml \
+    $(LOCAL_PATH)/audio/configs/nvaudio_conf.xml:$(TARGET_COPY_OUT_VENDOR)/etc/nvaudio_conf.xml \
+    $(LOCAL_PATH)/audio/configs/primary_module_deviceports.xml:$(TARGET_COPY_OUT_VENDOR)/etc/primary_module_deviceports.xml \
+    $(LOCAL_PATH)/audio/configs/primary_module_mixports.xml:$(TARGET_COPY_OUT_VENDOR)/etc/primary_module_mixports.xml
+
+PRODUCT_COPY_FILES += \
+    frameworks/av/services/audiopolicy/enginedefault/config/example/phone/audio_policy_engine_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_engine_configuration.xml \
+    frameworks/av/services/audiopolicy/enginedefault/config/example/phone/audio_policy_engine_default_stream_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_engine_default_stream_volumes.xml \
+    frameworks/av/services/audiopolicy/enginedefault/config/example/phone/audio_policy_engine_product_strategies.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_engine_product_strategies.xml \
+    frameworks/av/services/audiopolicy/enginedefault/config/example/phone/audio_policy_engine_stream_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_engine_stream_volumes.xml
 
 # Bluetooth
 PRODUCT_COPY_FILES += \
-$(LOCAL_PATH)/bluetooth/bt_vendor.conf:system/etc/bluetooth/bt_vendor.conf \
-$(LOCAL_PATH)/initfiles/bt_loader.sh:system/bin/bt_loader.sh
+    $(LOCAL_PATH)/bluetooth/bt_vendor.conf:system/etc/bluetooth/bt_vendor.conf \
+    $(LOCAL_PATH)/initfiles/bt_loader.sh:system/bin/bt_loader.sh
 
 PRODUCT_PACKAGES += \
     libbt-vendor \
     libldacBT_dec \
     android.hardware.bluetooth@1.0-impl \
-    android.hardware.bluetooth@1.0-service
+    android.hardware.bluetooth@1.0-service \
+    android.hardware.bluetooth.a2dp@1.0-impl \
+    android.hardware.bluetooth.audio@2.0-impl
 
 # Camera
 #PRODUCT_COPY_FILES += \
@@ -94,8 +105,8 @@ PRODUCT_PACKAGES += \
     PerformanceTile
 
 # Dexpreopt
-#PRODUCT_DEXPREOPT_SPEED_APPS += \
-#    SystemUI
+PRODUCT_DEXPREOPT_SPEED_APPS += \
+    SystemUI
 
 # DRM HAL
 PRODUCT_PACKAGES += \
@@ -169,22 +180,22 @@ PRODUCT_PACKAGES += \
 # Light
 PRODUCT_PACKAGES += \
     android.hardware.light@2.0-service.mocha
-    
+
+# LiveDisplay
+#    PRODUCT_PACKAGES += vendor.lineage.livedisplay@2.0-service-sysfs
+
 # Media config
+PRODUCT_PACKAGES += \
+    android.hardware.media.omx@1.0-impl \
+    android.hardware.media.omx@1.0-service
+
 PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_audio.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_video.xml
-PRODUCT_PACKAGES += \
-    media_codecs.xml \
-    media_codecs_performance.xml \
-    media_profiles_V1_0.xml
-
-# Missing configuration files    
-PRODUCT_COPY_FILES += \
-    frameworks/av/services/audiopolicy/enginedefault/config/example/phone/audio_policy_engine_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_engine_configuration.xml \
-    frameworks/av/services/audiopolicy/enginedefault/config/example/phone/audio_policy_engine_default_stream_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_engine_default_stream_volumes.xml \
-    frameworks/av/services/audiopolicy/enginedefault/config/example/phone/audio_policy_engine_product_strategies.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_engine_product_strategies.xml \
-    frameworks/av/services/audiopolicy/enginedefault/config/example/phone/audio_policy_engine_stream_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_engine_stream_volumes.xml
+    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_video.xml \
+    $(LOCAL_PATH)/media/enctune.conf:$(TARGET_COPY_OUT_VENDOR)/etc/enctune.conf \
+    $(LOCAL_PATH)/media/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
+    $(LOCAL_PATH)/media/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml \
+    $(LOCAL_PATH)/media/media_profiles_V1_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_V1_0.xml
 
 # Memtrack
 PRODUCT_PACKAGES += \
@@ -276,7 +287,8 @@ PRODUCT_PACKAGES += \
     ueventd.tn8.rc \
     ussrd.conf \
     init.nvgpu_shims.rc \
-    ussr_setup
+    ussr_setup \
+    wireguard.rc
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/initfiles/init.renderer.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.renderer.sh
@@ -293,6 +305,11 @@ PRODUCT_PACKAGES += \
     android.hardware.thermal@1.0-service-nvidia \
     thermalhal.tn8.xml
 
+# TimeKeep
+PRODUCT_PACKAGES += \
+    timekeep \
+    TimeKeep
+
 # Trust HAL
 PRODUCT_PACKAGES += \
     vendor.lineage.trust@1.0-service
@@ -308,11 +325,7 @@ PRODUCT_PACKAGES += \
 # Vendor seccomp policy files for media components:
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/seccomp/mediaextractor.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
-
-# USB
-PRODUCT_PACKAGES += \
-    android.hardware.usb@1.0-service.basic
-
+    
 # Wifi
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/dhcpcd.conf:$(TARGET_COPY_OUT_VENDOR)/etc/dhcpcd/dhcpcd.conf
@@ -324,12 +337,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.wifi@1.0-service \
     hostapd \
-    wificond \
-    libwpa_client \
+    conn_init \
     wpa_supplicant \
-    wpa_supplicant.conf \
-    p2p_supplicant_overlay.conf \
-    wpa_supplicant_overlay.conf
+    wpa_supplicant.conf
 
 PRODUCT_PACKAGES += \
     wireguard \

@@ -19,8 +19,9 @@
 LOCAL_PATH := device/xiaomi/mocha
 
 # Audio
-USE_XML_AUDIO_POLICY_CONF := 1
-TARGET_EXCLUDES_AUDIOFX := true
+BOARD_USES_GENERIC_AUDIO := false
+BOARD_USES_ALSA_AUDIO := true
+BOARD_USES_TINYHAL_AUDIO := false
 TARGET_LD_SHIM_LIBS := /system/vendor/lib/hw/audio.primary.vendor.tegra.so|libmocha_audio.so
 
 # Architecture
@@ -74,6 +75,9 @@ BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_EXFAT_DRIVER := sdfat
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USES_MKE2FS := true
+
+# Display
+#TARGET_SCREEN_DENSITY := 480
 
 # Graphics
 USE_OPENGL_RENDERER := true
@@ -172,13 +176,9 @@ BOARD_HOSTAPD_DRIVER             := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB        := lib_driver_cmd_bcmdhd
 WIFI_DRIVER_FW_PATH_STA          := "/vendor/firmware/fw_bcmdhd.bin"
 WIFI_DRIVER_FW_PATH_AP           := "/vendor/firmware/fw_bcmdhd_apsta.bin"
-WIFI_DRIVER_FW_PATH_P2P          := "/vendor/firmware/fw_bcmdhd.bin"
 WIFI_DRIVER_FW_PATH_PARAM        := "/sys/module/bcmdhd/parameters/firmware_path"
 #WIFI_DRIVER_MODULE_ARG           := "iface_name=wlan0"
 #WIFI_DRIVER_MODULE_NAME          := "bcmdhd"
-
-WIFI_HIDL_FEATURE_DUAL_INTERFACE := true
-WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 WIFI_HIDL_FEATURE_DISABLE_AP_MAC_RANDOMIZATION := true
 
 # workaround for devices that uses old GPU blobs
